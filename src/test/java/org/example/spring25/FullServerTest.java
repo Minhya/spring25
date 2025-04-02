@@ -24,7 +24,7 @@ public class FullServerTest {
 
     //21 Mars
 
-//    @LocalServerPort
+    @LocalServerPort
 //    private int port;
 
     @Container

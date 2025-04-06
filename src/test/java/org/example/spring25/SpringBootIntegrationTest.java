@@ -17,6 +17,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -27,12 +28,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@SpringBootTest
+@SpringBootTest //(properties = "spring.main.allow-bean-definition-overriding=true") för att override samma term i config.
 @AutoConfigureMockMvc
 @Import(SpringBootIntegrationTest.TestConfig.class)
+@ActiveProfiles("test") //ett alternativ för att inte köra config i tester. 25 mars. Alt 2 är att göa en replacement klass.
 @Testcontainers
 public class SpringBootIntegrationTest {
 
+    /* Test container*/
     @Container
     @ServiceConnection
     static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:11-alpine");
@@ -67,6 +70,7 @@ public class SpringBootIntegrationTest {
                 .andExpect(jsonPath("$.length()", Matchers.is(2)));
     }
 
+    /* Om det är tomt, kör detta för att stoppa in ngt i databasen*/
     @TestConfiguration
     static
     class TestConfig {

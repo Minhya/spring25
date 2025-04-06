@@ -25,7 +25,9 @@ class HelloControllerTest {
 
     @MockitoBean
     PlaygroundService playgroundService;
-
+    /* Används för att göra HTTP post request,
+    går ej in i servern.
+    Går direkt in i servern. */
     @Autowired
     MockMvc mockMvc;
 
